@@ -66,10 +66,15 @@
      */
     findAll: function findAll() {
       var _this = this;
+      var options = arguments[0] === undefined ? {} : arguments[0];
+      if (options.parameters) {
+        this.records.parameters = options.parameters;
+      }
+
       if (this._hasSynced) {
         return Promise.resolve(this.records);
       } else {
-        return Promise.resolve(this.records.fetch()).then(function () {
+        return Promise.resolve(this.records.fetch(options)).then(function () {
           return _this.records;
         });
       }
@@ -93,6 +98,7 @@
         if (!record) {
           _this.insert(model);
         }
+
         return model;
       });
     },
@@ -130,8 +136,7 @@
       } else {
         return new this.model({ id: model });
       }
-    }
-  });
+    } });
 
   var backbone_storage = Storage;
 

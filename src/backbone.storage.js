@@ -88,11 +88,15 @@ var Storage = Backbone.Storage = Metal.Class.extend({
    * @memberOf Storage
    * @returns {Promise} - A promise that will resolve to the entire collection.
    */
-  findAll() {
+  findAll(options = {}) {
+    if (options.parameters) {
+      this.records.parameters = options.parameters;
+    }
+
     if (this._hasSynced) {
       return Promise.resolve(this.records);
     } else {
-      return Promise.resolve(this.records.fetch()).then(() => {
+      return Promise.resolve(this.records.fetch(options)).then(() => {
         return this.records;
       });
     }
@@ -115,6 +119,7 @@ var Storage = Backbone.Storage = Metal.Class.extend({
       if (!record) {
         this.insert(model);
       }
+
       return model;
     });
   },
@@ -152,7 +157,7 @@ var Storage = Backbone.Storage = Metal.Class.extend({
     } else {
       return new this.model({ id: model });
     }
-  }
+  },
 });
 
 export default Storage;
