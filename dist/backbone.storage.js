@@ -43,8 +43,9 @@
      */
     find: function find(model) {
       var _this = this;
+      var forceFetch = arguments[1] === undefined ? false : arguments[1];
       var record = this.records.get(model);
-      if (record) {
+      if (record && !forceFetch) {
         return Promise.resolve(record);
       } else {
         model = this._ensureModel(model);
@@ -114,7 +115,7 @@
      * @returns {Promise} - A promise that will resolve to the added model.
      */
     insert: function insert(model) {
-      model = this.records.add(model);
+      model = this.records.add(model, { merge: true });
       return Promise.resolve(model);
     },
 

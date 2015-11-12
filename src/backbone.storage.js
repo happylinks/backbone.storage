@@ -66,9 +66,9 @@ var Storage = Backbone.Storage = Metal.Class.extend({
    * @param {Number|String|Object|Backbone.Model} model - The model to find.
    * @returns {Promise} - A promise that will resolve to the model.
    */
-  find(model) {
+  find(model, forceFetch=false) {
     let record = this.records.get(model);
-    if (record) {
+    if (record && !forceFetch) {
       return Promise.resolve(record);
     } else {
       model = this._ensureModel(model);
@@ -135,7 +135,7 @@ var Storage = Backbone.Storage = Metal.Class.extend({
    * @returns {Promise} - A promise that will resolve to the added model.
    */
   insert(model) {
-    model = this.records.add(model);
+    model = this.records.add(model, {merge: true});
     return Promise.resolve(model);
   },
 
